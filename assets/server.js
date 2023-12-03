@@ -64,9 +64,9 @@ async function init() {
             case 'Add A Department':
                 addDepartment();
                 break;
-            // case 'Add A Role':
-            //     addRole();
-            //     break;
+            case 'Add A Role':
+                addRole();
+                break;
             // case 'Add An Employee':
             //     addEmployee()
         }
@@ -128,13 +128,61 @@ async function addDepartment() {
         const {name} = addDepartment;
 
         // Executes a query to insert a new department into the table
-        await queryDatabase('INSERT INTO department (name) VALUES (?)', [name]);
+        await queryDatabase(`INSERT INTO department (name) VALUES (?)`, [name]);
 
-        // log a successful
+        // Log a successful addition to department
         console.log(`Added ${name} to the employee database`);
         console.table({name})
     } catch (err) {
         console.error('Error adding department', err.message);
     }   
+}
+
+// Function to add new role to the database
+async function addRole() {
+    try {
+
+        // Get all departments from table
+        const department = await queryDatabase (`SELECT * FROM department`);
+
+        // Users prompted to enter information for new role 
+        const roleDetails = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'Enter the title of the role:',
+                validate: (input) => (input ? true : 'Title is required')
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'Enter the salary for the role:',
+                validate: (input) => (!isNaN(input) && input > 0 ? true : 'Please enter a valid salary')
+            },
+            {
+                type: 'list',
+                name: 'department_id',
+                message: 'Select the department for the role:',
+
+                // Iterates over all elements in department --> executed arrow function will display a name and value thats represented by that department. Array choices is then used as the options for "Select the department for the role" 
+                choices: department.map(department => ({
+                    name: `${department.id} - ${department.name}`,
+                    value: department.id
+                }))
+            }
+        ]);
+
+        // Insert the new role into the database
+        await queryDatabase(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [
+            roleDetails.title,
+            roleDetails.salary,
+            roleDetails.department_id
+        ]);
+
+        // Logs successful addition to role
+        console.log(`Added ${roleDetails.title} to the roles in the employee database`);
+    } catch (error) {
+        console.error('Error adding role: ', error.message);
+    }
 }
 init()
