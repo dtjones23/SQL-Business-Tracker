@@ -42,12 +42,12 @@ async function init() {
             case 'View All Departments':
                 viewAllDepartments();
                 break;
-            // case 'View All Roles':
-            //     viewAllRoles();
-            //     break;
-            // case 'View All Employees':
-            //     viewAllEmployees();
-            //     break;
+            case 'View All Roles':
+                viewAllRoles();
+                break;
+            case 'View All Employees':
+                viewAllEmployees();
+                break;
             // case 'Add A Department':
             //     addDepartment();
             //     break;
@@ -72,4 +72,21 @@ function viewAllDepartments() {
     })
 }
 
+// executes a SQL query to select all roles from the table
+function viewAllRoles() {
+    db.query(`SELECT * FROM role`, (err, result) => {
+        if (err) throw err ;
+        console.log('Viewing All Roles');
+        console.table(result, ['title', 'salary', 'department_id'])
+    })
+}
+
+// executes a SQL query to select all employees from the table
+function viewAllEmployees() {
+    db.query(`SELECT * FROM employees`, (err, result) => {
+        if (err) throw err ;
+        console.log('Viewing All Employees');
+        console.table(result, ['first_name', 'last_name', 'role_id', 'manager_id'])
+    })
+}
 init()
