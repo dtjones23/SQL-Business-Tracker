@@ -109,4 +109,32 @@ async function viewAllEmployees() {
     }
 }
 
+// Executes a SQL query to add a new department
+async function addDepartment() {
+    try {
+        // Users prompted to enter a new department
+        const addDepartment = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'Enter a department name',
+
+                // ensures the user will input a department name
+                validate: (input) => (input ? true : 'Department name is required')
+            }
+        ]);
+
+        // Extracts the department name from the user input
+        const {name} = addDepartment;
+
+        // Executes a query to insert a new department into the table
+        await queryDatabase('INSERT INTO department (name) VALUES (?)', [name]);
+
+        // log a successful
+        console.log(`Added ${name} to the employee database`);
+        console.table({name})
+    } catch (err) {
+        console.error('Error adding department', err.message);
+    }   
+}
 init()
