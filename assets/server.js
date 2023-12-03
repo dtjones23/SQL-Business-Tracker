@@ -309,3 +309,95 @@ async function updateEmployeeRole() {
 }
 init()
 
+
+/* "This includes code thats more concise for readers" -- re-go over code and compare and contrast from new code written from help
+(make sure to incorporate into code above)
+
+// Function to fetch all employees from the database
+async function getAllEmployees() {
+    try {
+        const employees = await queryDatabase('SELECT id, first_name, last_name FROM employees');
+        return employees;
+    } catch (error) {
+        throw new Error(`Error fetching employees: ${error.message}`);
+    }
+}
+
+// Function to fetch all roles from the database
+async function getAllRoles() {
+    try {
+        const roles = await queryDatabase('SELECT id, title FROM role');
+        return roles;
+    } catch (error) {
+        throw new Error(`Error fetching roles: ${error.message}`);
+    }
+}
+
+// Function to update an employee's role in the database
+async function updateEmployeeRole(employeeId, newRoleId) {
+    try {
+        await queryDatabase('UPDATE employees SET role_id = ? WHERE id = ?', [newRoleId, employeeId]);
+        console.log('Updated employee\'s role in the database');
+    } catch (error) {
+        throw new Error(`Error updating employee role: ${error.message}`);
+    }
+}
+
+
+
+
+// Main initialization function
+async function init() {
+    try {
+        const options = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'duty',
+                message: 'What would you like to do?',
+                choices: [
+                    'View All Departments',
+                    'View All Roles',
+                    'View All Employees',
+                    'Add A Department',
+                    'Add A Role',
+                    'Add An Employee',
+                    'Update An Employee Role'
+                ]
+            }
+        ]);
+
+        switch (options.duty) {
+            case 'View All Departments':
+                viewAllDepartments();
+                break;
+            case 'View All Roles':
+                viewAllRoles();
+                break;
+            case 'View All Employees':
+                viewAllEmployees();
+                break;
+            case 'Add A Department':
+                addDepartment();
+                break;
+            case 'Add A Role':
+                addRole();
+                break;
+            case 'Add An Employee':
+                addEmployee();
+                break;
+            case 'Update An Employee Role':
+                await updateEmployeeRole();
+                break;
+        }
+    } catch (error) {
+        console.error('Error during initialization: ', error);
+    } finally {
+        // Close the database connection when done
+        db.end();
+    }
+}
+
+// Run the initialization function
+init();
+
+*/
