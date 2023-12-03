@@ -33,6 +33,11 @@ const queryDatabase = (sql, values) => {
 // Gives users options
 async function init() {
     try {
+        console.log(`............................`);
+        console.log('')
+        console.log(`WELCOME TO EMPLOYEE TRACKER.`);
+        console.log('')
+        console.log(`............................`);
 
         // Prompts users to make selection
         const options = await inquirer.prompt([
