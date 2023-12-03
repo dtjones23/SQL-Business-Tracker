@@ -10,18 +10,31 @@ const dbConfig = {
     // MySQL username
     user: 'root',
     // MySQL password here
-    password: 'Purplemaniandino23!',
+    password: '',
     database: 'employee_db'
   };
 
 // Create a mySQL connection using the configuration
 const db = mysql.createConnection(dbConfig);
 
+// Promisify the query method for async/await support
+const queryDatabase = (sql, values) => {
+    return new Promise((resolve, reject) => {
+      db.query(sql, values, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  };
+
 // Gives users options
 async function init() {
     try {
 
-        // prompts users to make selection
+        // Prompts users to make selection
         const options = await inquirer.prompt([
             {
                 type: 'list',
@@ -37,7 +50,7 @@ async function init() {
                 'Update An Employee Role']
             }
         ]);
-        // will call the corresponding function
+        // Will call the corresponding function
         switch (options.duty) {
             case 'View All Departments':
                 viewAllDepartments();
@@ -48,9 +61,9 @@ async function init() {
             case 'View All Employees':
                 viewAllEmployees();
                 break;
-            // case 'Add A Department':
-            //     addDepartment();
-            //     break;
+            case 'Add A Department':
+                addDepartment();
+                break;
             // case 'Add A Role':
             //     addRole();
             //     break;
@@ -63,30 +76,37 @@ async function init() {
     }
 }
 
-// executes a SQL query to select all departments from the table
-function viewAllDepartments() {
-    db.query(`SELECT * FROM department`, (err, result) => {
-        if (err) throw err ;
+// Executes a SQL query to select all departments from the table
+async function viewAllDepartments() {
+    try {
+        const result = await queryDatabase(`SELECT * FROM department`)
         console.log('Viewing All Departments');
         console.table(result, ['name'])
-    })
+    } catch (err) {
+        console.error('Error viewing all departments', err);
+    }
 }
 
-// executes a SQL query to select all roles from the table
-function viewAllRoles() {
-    db.query(`SELECT * FROM role`, (err, result) => {
-        if (err) throw err ;
+// Executes a SQL query to select all roles from the table
+async function viewAllRoles() {
+    try {
+        const result = await queryDatabase(`SELECT * FROM role`)
         console.log('Viewing All Roles');
         console.table(result, ['title', 'salary', 'department_id'])
-    })
+    } catch (err) {
+        console.error('Error viewing all roles', err);
+    }
 }
 
-// executes a SQL query to select all employees from the table
-function viewAllEmployees() {
-    db.query(`SELECT * FROM employees`, (err, result) => {
-        if (err) throw err ;
+// Executes a SQL query to select all employees from the table
+async function viewAllEmployees() {
+    try {
+        const result = await queryDatabase(`SELECT * FROM employees`)
         console.log('Viewing All Employees');
         console.table(result, ['first_name', 'last_name', 'role_id', 'manager_id'])
-    })
+    } catch (err) {
+        console.error('Error viewing all employees', err);
+    }
 }
+
 init()
