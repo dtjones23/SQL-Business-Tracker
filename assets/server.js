@@ -68,7 +68,11 @@ async function init() {
                 addRole();
                 break;
             case 'Add An Employee':
-                addEmployee()
+                addEmployee();
+                break;
+            case 'Update An Employee Role':
+                updateEmployeeRole();
+                break;
         }
 
     } catch (error) {
@@ -252,4 +256,51 @@ async function addEmployee () {
     }
 }
 
+// Function to update an employee's role
+async function updateEmployeeRole() {
+    try {
+        // Get all employees from the database
+        const employees = await queryDatabase('SELECT id, first_name, last_name FROM employees');
+
+        // Prompt user to select an employee to update
+        const employeeToUpdate = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employee_id',
+                message: 'Select the employee to update:',
+                choices: employees.map(employee => ({
+                    name: `${employee.id} - ${employee.first_name} ${employee.last_name}`,
+                    value: employee.id
+                }))
+            }
+        ]);
+
+        // Get all roles from the database
+        const roles = await queryDatabase('SELECT id, title FROM role');
+
+        // Prompt user to select a new role for the employee
+        const newRole = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'role_id',
+                message: 'Select the new role for the employee:',
+                choices: roles.map(role => ({
+                    name: `${role.id} - ${role.title}`,
+                    value: role.id
+                }))
+            }
+        ]);
+
+        // Update the employee's role in the database
+        await queryDatabase('UPDATE employees SET role_id = ? WHERE id = ?', [
+            newRole.role_id,
+            employeeToUpdate.employee_id
+        ]);
+
+        console.log(`Updated employee's role in the database`);
+    } catch (error) {
+        console.error('Error updating employee role: ', error.message);
+    }
+}
 init()
+
