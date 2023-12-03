@@ -16,7 +16,3 @@ const dbConfig = {
 
 // Create a mySQL connection using the configuration
 const db = mysql.createConnection(dbConfig);
-
-
-
-
