@@ -67,8 +67,8 @@ async function init() {
             case 'Add A Role':
                 addRole();
                 break;
-            // case 'Add An Employee':
-            //     addEmployee()
+            case 'Add An Employee':
+                addEmployee()
         }
 
     } catch (error) {
@@ -185,4 +185,71 @@ async function addRole() {
         console.error('Error adding role: ', error.message);
     }
 }
+// Function to add a new employee
+async function addEmployee () {
+    try {
+        
+        const department = await queryDatabase (`SELECT * FROM department`);
+
+        const employeeDetails = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'first_name',
+                message: 'Enter first name',
+                validate: (input) => (input ? true : 'First name is required')
+            },
+            {
+                type: 'input',
+                name: 'last_name',
+                message: 'Enter last name',
+                validate: (input) => (input ? true : 'Last name is required')
+            },
+            {
+                type: 'confirm',
+                name: 'hasRole',
+                message: 'Do you want to assign a role to this employee?',
+                default: true
+            },
+            {
+                type: 'list',
+                name: 'role_id',
+                message: 'Select the role for the employee:',
+                choices: async () => {
+                    if (employeeDetails.hasRole) {
+                        const roles = await queryDatabase(`SELECT id, title FROM role`);
+                        return roles.map(role => ({
+                            name: `${role.id} - ${role.title}`,
+                            value: role.id
+                        }));
+                    } else {
+                        return [];
+                    }
+                },
+                // roles fetched dynamically from the database if the user chooses to assign a role
+                when: (answers) => answers.hasRole
+            },
+            {
+                type: 'input',
+                name: 'manager_id',
+                message: 'Enter the manager Id for the employee (can be null):',
+                validate: (input) => (input === '' || !isNaN(input) ? true : 'Must be a valid number or null'),
+
+                // converts the input to null if it's an empty string
+                filter: (input) => (input === '' ? null : parseInt(input)),
+            }
+        ]);
+    
+        await queryDatabase('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [
+            employeeDetails.first_name,
+            employeeDetails.last_name,
+            employeeDetails.role_id,
+            employeeDetails.manager_id
+        ]);
+
+        console.log(`Added ${employeeDetails.first_name} ${employeeDetails.last_name} the employee database`);
+    } catch (error) {
+        console.error('Error adding role: ', error.message);
+    }
+}
+
 init()

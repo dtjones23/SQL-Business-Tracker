@@ -23,9 +23,9 @@ VALUES ("Eddie", "Mumbie", 1, null),
        ("Lady", "Green", 2, null),
        ("Billy", "Badahh", 3, null),
        ("Lou", "William", 4, 2),
-       ("Ellie", "May", 2, null),
-       ("Genie", "Garner", 4, null),
-       ("Leroy", "Grant", 1, null),
-       ("Freddie", "Claboni", 3, 3);
+       ("Ellie", "May", 5, null),
+       ("Genie", "Garner", 6, null),
+       ("Leroy", "Grant", 7, null),
+       ("Freddie", "Claboni", 8, 3);
 
 
