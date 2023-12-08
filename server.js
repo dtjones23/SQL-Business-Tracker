@@ -10,7 +10,7 @@ const dbConfig = {
     // MySQL username
     user: 'root',
     // MySQL password here
-    password: '',
+    password: 'Purplemaniandino23!',
     database: 'employee_db'
   };
 
@@ -91,6 +91,7 @@ async function viewAllDepartments() {
         const result = await queryDatabase(`SELECT * FROM department`)
         console.log('Viewing All Departments');
         console.table(result, ['name'])
+        return init()
     } catch (err) {
         console.error('Error viewing all departments', err);
     }
@@ -102,6 +103,7 @@ async function viewAllRoles() {
         const result = await queryDatabase(`SELECT * FROM role`)
         console.log('Viewing All Roles');
         console.table(result, ['title', 'salary', 'department_id'])
+        return init()
     } catch (err) {
         console.error('Error viewing all roles', err);
     }
@@ -113,6 +115,7 @@ async function viewAllEmployees() {
         const result = await queryDatabase(`SELECT * FROM employees`)
         console.log('Viewing All Employees');
         console.table(result, ['first_name', 'last_name', 'role_id', 'manager_id'])
+        return init()
     } catch (err) {
         console.error('Error viewing all employees', err);
     }
@@ -142,6 +145,7 @@ async function addDepartment() {
         // Log a successful addition to department
         console.log(`Added ${name} to the employee database`);
         console.table({name})
+        return init()
     } catch (err) {
         console.error('Error adding department', err.message);
     }   
@@ -190,6 +194,7 @@ async function addRole() {
 
         // Logs successful addition to role
         console.log(`Added ${roleDetails.title} to the roles in the employee database`);
+        return init()
     } catch (error) {
         console.error('Error adding role: ', error.message);
     }
@@ -198,7 +203,7 @@ async function addRole() {
 async function addEmployee () {
     try {
         
-        const department = await queryDatabase (`SELECT * FROM department`);
+        // const department = await queryDatabase (`SELECT * FROM department`);
 
         const employeeDetails = await inquirer.prompt([
             {
@@ -256,6 +261,7 @@ async function addEmployee () {
         ]);
 
         console.log(`Added ${employeeDetails.first_name} ${employeeDetails.last_name} the employee database`);
+        return init()
     } catch (error) {
         console.error('Error adding role: ', error.message);
     }
@@ -303,6 +309,7 @@ async function updateEmployeeRole() {
         ]);
 
         console.log(`Updated employee's role in the database`);
+        return init()
     } catch (error) {
         console.error('Error updating employee role: ', error.message);
     }

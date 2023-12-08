@@ -12,6 +12,6 @@
   "description": "",
   "dependencies": {
     "inquirer": "^8.2.4",
-    "mysql": "mysql -u root -p"
+    "mysql": "^3.6.5"
   }
 }
