@@ -275,6 +275,7 @@ async function addEmployee() {
         );
 
         console.log(`Added ${basicEmployeeDetails.first_name} ${basicEmployeeDetails.last_name} to the employee database`);
+        return init();
     } catch (error) {
         console.error('Error adding employee: ', error.message);
     }
