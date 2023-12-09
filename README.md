@@ -10,6 +10,10 @@ The purpose behind this assignment was to create interfaces that make it easy fo
 
 [Usage](#usage)
 
+[Screenshot](#screenshot)
+
+[Video](#video)
+
 [Credits](#credits)
 
 ## Instructions
@@ -40,6 +44,12 @@ To install the dependencies, run the following commands:
 
 ## Usage
 Type npm start or node index.js in console then the application will prompt the options.
+
+## Screeenshot
+![Screen Shot 2023-12-09 at 5 00 46 PM (3)](https://github.com/dtjones23/SQL-Business-Tracker/assets/142169871/8a370007-b664-4e17-8890-3495979814d5)
+
+## Video
+https://drive.google.com/file/d/1WLZkisRD0ia_ZFVCMy46X_ofx_NsdjXz/view
 
 ## Credits
 https://www.youtube.com/watch?v=p3qvj9hO_Bo
