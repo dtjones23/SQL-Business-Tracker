@@ -119,10 +119,25 @@ async function viewAllRoles() {
 // Executes a SQL query to select all employees from the table
 async function viewAllEmployees() {
     try {
-        const result = await queryDatabase(`SELECT * FROM employees`)
+        // Executes a SQL query to fetch employee data with role titles using a LEFT JOIN
+        const employeesData = await queryDatabase(`
+            SELECT employees.*, role.title AS role_title
+            FROM employees
+            LEFT JOIN role ON employees.role_id = role.id
+        `);
+
+        // Maps over the resulting data to create a new array with now modified employee objects
+        const employees = employeesData.map(employee => ({
+            first_name: employee.first_name,
+            last_name: employee.last_name,
+            role: employee.role_title || 'N/A', // Use 'N/A' if role_title is null
+            manager_id: employee.manager_id || 'N/A', // Use 'N/A' if manager_id is null
+        }));
+
+        // Displays table results 
         console.log('Viewing All Employees');
-        console.table(result, ['first_name', 'last_name', 'role_id', 'manager_id'])
-        return init()
+        console.table(employees, ['first_name', 'last_name', 'role', 'manager_id']);
+        return init();
     } catch (err) {
         console.error('Error viewing all employees', err);
     }
