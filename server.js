@@ -10,7 +10,7 @@ const dbConfig = {
     // MySQL username
     user: 'root',
     // MySQL password here
-    password: 'Purplemaniandino23!',
+    password: '',
     database: 'employee_db'
 };
 
